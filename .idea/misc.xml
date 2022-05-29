@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/HashGenerator/app/src/main/res/drawable/ic_baseline_content_copy_24.xml" value="0.1585" />
         <entry key="..\:/HashGenerator/app/src/main/res/drawable/ic_check_circle.xml" value="0.1" />
         <entry key="..\:/HashGenerator/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
+        <entry key="..\:/HashGenerator/app/src/main/res/layout/copied_message.xml" value="0.33" />
         <entry key="..\:/HashGenerator/app/src/main/res/layout/drop_down_items.xml" value="0.2046875" />
         <entry key="..\:/HashGenerator/app/src/main/res/layout/fragment_home.xml" value="0.25" />
-        <entry key="..\:/HashGenerator/app/src/main/res/layout/fragment_success.xml" value="0.18802083333333333" />
+        <entry key="..\:/HashGenerator/app/src/main/res/layout/fragment_success.xml" value="0.33" />
         <entry key="..\:/HashGenerator/app/src/main/res/menu/home_menu.xml" value="0.36666666666666664" />
       </map>
     </option>

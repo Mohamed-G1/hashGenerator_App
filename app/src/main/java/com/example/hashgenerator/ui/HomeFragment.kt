@@ -3,13 +3,16 @@ package com.example.hashgenerator.ui
 import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.alpha
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.hashgenerator.R
 import com.example.hashgenerator.databinding.FragmentHomeBinding
+import com.example.hashgenerator.viewModels.HomeViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,6 +21,7 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
 
     lateinit var binding: FragmentHomeBinding
+    private val viewModel: HomeViewModel by viewModels()
 
 
     override fun onResume() {
@@ -41,6 +45,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonGenerate.setOnClickListener {
@@ -56,11 +61,24 @@ class HomeFragment : Fragment() {
         } else {
             lifecycleScope.launch {
                 applyAnimation()
-                navigationToSuccess()
+
+                navigationToSuccess(getHashData())
+
             }
         }
     }
 
+    // fun to get hash
+    private fun getHashData(): String {
+        // first we will get the values from edit text
+
+        val algorithm = binding.autoTextInput.text.toString()
+        val text = binding.editText.text.toString()
+        return viewModel.getHash(text, algorithm)
+
+    }
+
+    // show snackBar
     private fun showSnackBar(message: String) {
         val snackBar = Snackbar.make(
             binding.rootLayout,
@@ -68,13 +86,26 @@ class HomeFragment : Fragment() {
             Snackbar.LENGTH_SHORT
         )
         snackBar.setAction("Okay") {}
+            snackBar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.blue))
         snackBar.show()
 
     }
 
+    // show menu in top bar
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.home_menu, menu)
+    }
+
+    // create an action on item selected in menu on top bar
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.clear_menu) {
+            binding.editText.text.clear()
+            showSnackBar("Cleared! ")
+            return true
+        }
+        return true
+
     }
 
     // this fun to animate text view
@@ -111,8 +142,10 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun navigationToSuccess() {
-        findNavController().navigate(R.id.action_homeFragment_to_successFragment)
+    private fun navigationToSuccess(hash : String) {
+        val directions = HomeFragmentDirections.actionHomeFragmentToSuccessFragment().setHash(hash)
+
+        findNavController().navigate(directions)
     }
 
     // this to if the fragment destroyed will set binding into null
